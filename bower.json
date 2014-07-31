@@ -23,6 +23,7 @@
     "angular-resource": "~1.2.19",
     "angular-sanitize": "~1.2.19",
     "angular-devise": "~0.5.0",
+    "domready": "~1.0.5",
     "lodash": "~2.4.1",
     "restangular": "~1.4.0"
   }
