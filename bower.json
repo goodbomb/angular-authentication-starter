@@ -1,31 +1,29 @@
 {
-  "name": "AngularJS-Gulp-Browserify-Starter",
+  "name": "Angular-Authentication-Starter",
   "version": "1.0.0",
-  "description": "Base AngularJS application with gulp and browserify",
+  "description": "AngularJS starter app with Ruby on Rails authentication through the Devise gem.",
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/goodbomb/angular-gulp-browserify-starter"
+    "url": "https://github.com/goodbomb/angular-authentication-starter"
   },
   "authors": "Ben Scott <bscott@tekalstudios.com>",
   "private": false,
   "devDependencies": {},
   "dependencies": {
-    "jquery": "latest",
-    "bootstrap": "latest",
-    "font-awesome": "latest",
-    "animate.css": "latest",
-    "angular": "latest",
-    "angular-bootstrap": "latest",
-    "angular-ui-utils": "latest",
-    "angular-ui-router": "latest",
-    "angular-animate": "latest",
-    "angular-cookies": "latest",
-    "angular-resource": "latest",
-    "angular-sanitize": "latest",
-    "domready": "latest",
-    "alertify.js": "latest",
-    "lodash": "latest",
-    "restangular": "latest"
+    "jquery": "~2.1.1",
+    "bootstrap": "~3.1.1",
+    "animate.css": "~3.1.1",
+    "angular": "~1.2.19",
+    "angular-bootstrap": "~0.11.0",
+    "angular-ui-utils": "~0.1.1",
+    "angular-ui-router": "~0.2.10",
+    "angular-animate": "~1.2.19",
+    "angular-cookies": "~1.2.19",
+    "angular-resource": "~1.2.19",
+    "angular-sanitize": "~1.2.19",
+    "angular-devise": "~0.5.0",
+    "lodash": "~2.4.1",
+    "restangular": "~1.4.0"
   }
 }
