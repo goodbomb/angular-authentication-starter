@@ -1,0 +1,29 @@
+<div class="users-auth-login">
+
+	<div class="login-form small-form">
+		<h1>Sign in to your account</h1>
+	    <form class="form" name="loginForm" ng-submit="login()" novalidate>
+
+	    	<div class="form-group" ng-class="{'invalid' : loginForm.email.$invalid && loginForm.email.$dirty, 'valid' : loginForm.email.$valid && loginForm.email.$dirty}">
+	    		<label for="email" class="inline">Email</label>
+	    		<input type="email" name="email" id="email" class="form-control" placeholder="email@address.com" ng-model="credentials.email" ng-pattern="emailRegex" required auto-focus show-form-errors />
+	    		<p class="form-helper" ng-if="loginForm.email.$error.pattern && !loginForm.email.$focused">Invalid Email Address</p>
+	    		<p class="form-helper" ng-if="loginForm.email.$dirty && loginForm.email.$error.required && !loginForm.email.$focused">Email Address is required!</p>
+	    	</div>
+
+	    	<div class="form-group" ng-class="{'invalid' : loginForm.password.$invalid && loginForm.password.$dirty, 'valid' : loginForm.password.$valid && loginForm.password.$dirty}">
+	    		<label for="password" class="inline">Password</label>
+	    		<input type="password" name="password" id="password" class="form-control" placeholder="password" ng-model="credentials.password" ng-minlength=8 required show-form-errors />
+	    		<p class="form-helper" ng-if="loginForm.password.$dirty && loginForm.password.$error.required && !loginForm.password.$focused">Password is required!</p>
+	    		<p class="form-helper" ng-if="loginForm.password.$dirty && loginForm.password.$error.minlength && !loginForm.password.$focused">Password must contain at least 8 characters.</p>
+	    	</div>
+
+	    	<div class="form-group form-buttons">
+	    		<button class="btn button button-secondary" type="submit" ng-disabled="loginForm.$invalid">Log In</button>
+	    		<a ui-sref="auth.passwordReset">I forgot my password</a>
+	    	</div>
+
+	    </form>
+	</div>
+
+</div>

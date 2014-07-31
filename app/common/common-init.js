@@ -18,10 +18,7 @@ function commonInit($rootScope, $state) {
 			window.scrollTo(0, 0);
 		}
 	});
-
-    // Proper Regex Pattern for email input form validation
-	$rootScope.emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
+	
 }
 
 commonInit.$inject = ['$rootScope', '$state'];
