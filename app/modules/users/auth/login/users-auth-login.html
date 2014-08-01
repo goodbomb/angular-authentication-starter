@@ -1,7 +1,7 @@
-<div class="users-auth-login">
+<div class="users-auth-login small-panel">
 
-	<div class="login-form small-form">
-		<h1>Sign in to your account</h1>
+	<div class="login-form">
+		<h1>Log In</h1>
 	    <form class="form" name="loginForm" ng-submit="login()" novalidate>
 
 	    	<div class="form-group" ng-class="{'invalid' : loginForm.email.$invalid && loginForm.email.$dirty, 'valid' : loginForm.email.$valid && loginForm.email.$dirty}">
@@ -19,7 +19,7 @@
 	    	</div>
 
 	    	<div class="form-group form-buttons">
-	    		<button class="btn button button-secondary" type="submit" ng-disabled="loginForm.$invalid">Log In</button>
+	    		<button class="btn button button-secondary" type="submit" ng-disabled="loginForm.$invalid">Sign In</button>
 	    		<a ui-sref="auth.passwordReset">I forgot my password</a>
 	    	</div>
 
