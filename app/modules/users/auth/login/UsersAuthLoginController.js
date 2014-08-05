@@ -1,14 +1,12 @@
 /*jshint camelcase: false */
 'use strict';
 
-function UsersAuthLoginCtrl($scope, $state, $cookieStore, Auth, AUTH_EVENTS, alertService) {
+function UsersAuthLoginCtrl($rootScope, $scope, $state, $cookieStore, $timeout, Auth, AUTH_EVENTS, alertService) {
 
-	var success = function(response) {
-		$scope.currentUser = response;
-		$cookieStore.put('uid', response.data.uid);
-		$cookieStore.put('auth_token', response.data.auth_token);
+	var success = function(user) {
+		$rootScope.$broadcast('logged-in');
 		alertService.showAlert(AUTH_EVENTS.loginSuccess, 'alert-success');
-		$state.go('profile', {id:$scope.currentUser.id});
+		$state.go('profile', {id:user.data.uid});
 	};
 
 	var error = function() {
@@ -30,5 +28,5 @@ function UsersAuthLoginCtrl($scope, $state, $cookieStore, Auth, AUTH_EVENTS, ale
 
 }
 
-UsersAuthLoginCtrl.$inject = ['$scope', '$state', '$cookieStore', 'Auth', 'AUTH_EVENTS', 'alertService'];
+UsersAuthLoginCtrl.$inject = ['$rootScope', '$scope', '$state', '$cookieStore', '$timeout', 'Auth', 'AUTH_EVENTS', 'alertService'];
 module.exports = UsersAuthLoginCtrl;

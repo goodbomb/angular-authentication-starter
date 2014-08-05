@@ -12,7 +12,7 @@ var Alert = function($rootScope, $timeout) {
 
 			$timeout(function () {
 	            service.hideAlert();
-	        }, 60000);
+	        }, 3000);
 		},
 
 		hideAlert: function() {

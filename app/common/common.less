@@ -17,6 +17,11 @@ a, a:hover {
     cursor: pointer;
     text-decoration: none;
 }
+a, button {
+    &:focus {
+        outline:0 !important;
+    }
+}
 
 /* ==========================================================================
     Manual Resets
@@ -102,5 +107,6 @@ nav {
     .container();
     .animated();
     .fadeIn();
+    text-align: center;
 }
 

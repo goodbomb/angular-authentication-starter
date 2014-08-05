@@ -5,8 +5,16 @@ var Auth = function($http, $cookieStore, AUTH_EVENTS, alertService) {
 
 	var authService = {
 
+		signup: function(newUser) {
+			return $http.post('api/user/sign_up', newUser);
+		},
+
 		login: function(credentials) {
-			return $http.post('api/user/login', credentials);
+			return $http.post('api/user/login', credentials).then(function(user){
+				$cookieStore.put('uid', user.data.uid);
+				$cookieStore.put('auth_token', user.data.auth_token);
+				return user;
+			});
 		},
 
 		isLoggedIn: function() {
