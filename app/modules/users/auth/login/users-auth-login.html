@@ -1,5 +1,9 @@
 <div class="users-auth-login small-panel">
 
+	<div class="alert alert-danger" ng-show="wrongCredentials">
+		Wrong Credentials
+	</div>
+
 	<div class="login-form">
 		<h1>Log In</h1>
 	    <form class="form" name="loginForm" ng-submit="login()" novalidate>

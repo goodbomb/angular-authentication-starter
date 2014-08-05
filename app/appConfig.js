@@ -3,15 +3,24 @@
 
 'use strict';
 
-function appRoutes($stateProvider, $urlRouterProvider, $locationProvider) {
+function appRoutes($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
-	// Add hasbang prefix for SEO and HTML5 mode to remove #! from the URL.
+/* ==========================================================================
+    Include AuthInterceptor for token-based authentication
+========================================================================== */
+	$httpProvider.interceptors.push('AuthInterceptor');
+
+/* ==========================================================================
+    Add hasbang prefix for SEO and HTML5 mode to remove #! from the URL
+========================================================================== */
 	// Html5 mode requires server-side configuration. See http://bit.ly/1qLuJ0v
 	$locationProvider.html5Mode(true).hashPrefix('!');
 	// For any unmatched url, redirect to /
 	$urlRouterProvider.otherwise('/');
 
-	// Now set up the states
+/* ==========================================================================
+    Location States (Home)
+========================================================================== */
 	var home = {
 		name: 'home', // state name
 		url: '/', // url path that activates this state
@@ -28,5 +37,5 @@ function appRoutes($stateProvider, $urlRouterProvider, $locationProvider) {
 
 }
 
-appRoutes.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
+appRoutes.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider'];
 module.exports = appRoutes;

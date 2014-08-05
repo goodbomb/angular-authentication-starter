@@ -1,7 +1,7 @@
 'use strict';
 
 function devConfig() {
-
+	
 }
 
 devConfig.$inject = [];

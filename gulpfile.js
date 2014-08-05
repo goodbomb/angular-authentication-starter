@@ -2,6 +2,7 @@
 // Gulp Plugins
 // =======================================================================
 var gulp            = require('gulp'),
+    connect         = require('gulp-connect'),
     gutil           = require('gulp-util'),
     jshint          = require('gulp-jshint'),
     stylish         = require('jshint-stylish'),
@@ -14,7 +15,6 @@ var gulp            = require('gulp'),
     prefix          = require('gulp-autoprefixer'),
     minifyCSS       = require('gulp-minify-css'),
     notify          = require('gulp-notify'),
-    angularTplCache = require('gulp-angular-templatecache'),
     browserify      = require('browserify'),
     watchify        = require('watchify'),
     source          = require('vinyl-source-stream'),
@@ -30,10 +30,11 @@ var filePath = {
         dest: './dist' 
     },
     lint: { 
-        src: ['./app/*.js', './app/**/*.js'] 
+        src: ['!./app/assets/vendor/**/*.js', './app/*.js', './app/**/*.js'] 
     },
     browserify: { 
-        src: './app/app.js',
+        DEVsrc: './app/appDev.js',
+        PRODsrc: './app/app.js',
         watch: 
         [
             '!./app/assets/libs/*.js',
@@ -51,19 +52,27 @@ var filePath = {
         watch: ['./app/assets/images', './app/assets/images/**/*'],
         dest: './dist/images/' 
     },
+    icons: { 
+        src: './app/assets/icons/fonts/*', 
+        watch: ['./app/assets/icons/fonts/*'],
+        dest: './dist/fonts/'
+    },
     vendorJS: { 
         // These files will be bundled into a single vendor.js file that's called at the bottom of index.html
         src: 
         [
             './libs/jquery/dist/jquery.js', // v2.1.1
-            './libs/bootstrap/dist/js/bootstrap.js' // v3.1.1
+            './libs/bootstrap/dist/js/bootstrap.js', // v3.1.1
+            './app/assets/vendor/modernizr.js',
+            './app/assets/vendor/webshim/js-webshim/dev/polyfiller.js' // v1.14.5
         ]
     },
     vendorCSS: { 
         src: 
         [
             './libs/bootstrap/dist/css/bootstrap.css', // v3.1.1
-            './libs/font-awesome/css/font-awesome.css' // v4.1.0
+            './app/assets/icons/styles.css',
+            './libs/animate.css/animate.css' // v3.1.1
         ]
     },
     copyIndex: { 
@@ -86,40 +95,52 @@ function handleError(err) {
 
 
 // =======================================================================
-// Server Settings for local development (Express Server)
-// =======================================================================
-var embedlr         = require('gulp-embedlr'),
-    refresh         = require('gulp-livereload'),
-    lrserver        = require('tiny-lr')(),
-    express         = require('express'),
-    livereload      = require('connect-livereload'),
-    livereloadport  = 35729,
-    serverportDev   = 5000,
-    serverportProd  = 5050,
-    server          = express();
+// Server Task
+// =======================================================================  
+var express = require('express'),
+    server  = express();
 
-server.use(livereload({port: livereloadport}));
-// Use our 'dist' folder as rootfolder
+// Server settings
 server.use(express.static('./dist'));
 // Redirects everything back to our index.html
 server.all('/*', function(req, res) {
     res.sendfile('/', { root: './dist' });
 });
 
-
-// =======================================================================
-// Dev Server Task
-// =======================================================================  
-gulp.task('dev', function() {
-    server.listen(serverportDev);
-    lrserver.listen(livereloadport);
-    console.log('Server running at http://localhost:5000');
+gulp.task('devServer', function() {
+  connect.server({
+    root: './dist',
+    fallback: './dist/index.html',
+    port: 5000,
+    livereload: true,
+    middleware: function(connect, o) {
+        return [ (function() {
+            var url = require('url');
+            var proxy = require('proxy-middleware');
+            var options = url.parse('http://localhost:3000/');
+            options.route = '/api';
+            return proxy(options);
+        })() ];
+    }
+  });
 });
 
-gulp.task('stage', function() {
-    server.listen(serverportProd);
-    lrserver.listen(livereloadport);
-    console.log('Server running at http://localhost:5050');
+gulp.task('stageServer', function() {
+  connect.server({
+    root: './dist',
+    fallback: './dist/index.html',
+    port: 5050,
+    livereload: true,
+    middleware: function(connect, o) {
+        return [ (function() {
+            var url = require('url');
+            var proxy = require('proxy-middleware');
+            var options = url.parse('http://api.taliflo.com/');
+            options.route = '/api';
+            return proxy(options);
+        })() ];
+    }
+  });
 });
 
 
@@ -151,7 +172,7 @@ gulp.task('lint', function() {
 // Browserify Bundle
 // =======================================================================  
 gulp.task('bundle-dev', function() {
-    var bundler = watchify(filePath.browserify.src);
+    var bundler = watchify(filePath.browserify.DEVsrc);
 
     bundler.on('update', rebundle)
 
@@ -167,14 +188,14 @@ gulp.task('bundle-dev', function() {
             .pipe(sourcemaps.write())
             .pipe(gulp.dest(filePath.build.dest))
             .pipe(notify({ message: 'Browserify task complete' }))
-            .pipe(refresh(lrserver));
+            .pipe(connect.reload());
     }
 
     return rebundle()
 });
 
 gulp.task('bundle-prod', function() {
-    var bundler = watchify(filePath.browserify.src);
+    var bundler = watchify(filePath.browserify.PRODsrc);
 
     bundler.on('update', rebundle)
 
@@ -187,7 +208,7 @@ gulp.task('bundle-prod', function() {
             .pipe(streamify(uglify()))
             .pipe(gulp.dest(filePath.build.dest))
             .pipe(notify({ message: 'Browserify task complete' }))
-            .pipe(refresh(lrserver));
+            .pipe(connect.reload());
     }
 
     return rebundle()
@@ -208,7 +229,7 @@ gulp.task('styles-dev', function () {
         .pipe(gulp.dest(filePath.build.dest))
         .on("error", handleError)
         .pipe(notify({ message: 'Styles task complete' }))
-        .pipe(refresh(lrserver));
+        .pipe(connect.reload());
 });
 
 gulp.task('styles-prod', function () {
@@ -231,7 +252,19 @@ gulp.task('images', function() {
         .on("error", handleError)
         .pipe(gulp.dest(filePath.images.dest))
         .pipe(notify({ message: 'Images copied' }))
-        .pipe(refresh(lrserver));
+        .pipe(connect.reload());
+});
+
+
+// =======================================================================
+// Icons Task
+// =======================================================================  
+gulp.task('icons', function() {
+    return gulp.src(filePath.icons.src)
+        .on("error", handleError)
+        .pipe(gulp.dest(filePath.icons.dest))
+        .pipe(notify({ message: 'Icons copied' }))
+        .pipe(connect.reload());
 });
 
 
@@ -258,7 +291,7 @@ gulp.task('vendorCSS', function () {
         .pipe(minifyCSS())
         .pipe(gulp.dest(filePath.build.dest))
         .pipe(notify({ message: 'VendorCSS task complete' }))
-        .pipe(refresh(lrserver));
+        .pipe(connect.reload());
 });
 
 
@@ -269,7 +302,7 @@ gulp.task('copyIndex', function () {
     return gulp.src(filePath.copyIndex.src)
         .pipe(gulp.dest(filePath.build.dest))
         .pipe(notify({ message: 'index.html successfully copied' }))
-        .pipe(refresh(lrserver));
+        .pipe(connect.reload());
 });
 
 
@@ -290,6 +323,7 @@ gulp.task('watch', function () {
     gulp.watch(filePath.browserify.watch, ['bundle-dev']);
     gulp.watch(filePath.styles.watch, ['styles-dev']);
     gulp.watch(filePath.images.watch, ['images']);
+    gulp.watch(filePath.icons.watch, ['icons']);
     gulp.watch(filePath.vendorJS.src, ['vendorJS']);
     gulp.watch(filePath.vendorCSS.src, ['vendorCSS']);
     gulp.watch(filePath.copyIndex.watch, ['copyIndex']);
@@ -307,7 +341,7 @@ gulp.task('build-dev', function(callback) {
         ['clean-dev', 'lint'],
         // images and vendor tasks are removed to speed up build time. Use "gulp build" to do a full re-build of the dev app.
         ['bundle-dev', 'styles-dev', 'copyIndex', 'copyFavicon'],
-        ['dev', 'watch'],
+        ['devServer', 'watch'],
         callback
     );
 });
@@ -316,8 +350,8 @@ gulp.task('build-dev', function(callback) {
 gulp.task('build-prod', function(callback) {
     runSequence(
         ['clean-full', 'lint'],
-        ['bundle-prod', 'styles-prod', 'images', 'vendorJS', 'vendorCSS', 'copyIndex', 'copyFavicon'],
-        ['stage'],
+        ['bundle-prod', 'styles-prod', 'images', 'icons', 'vendorJS', 'vendorCSS', 'copyIndex', 'copyFavicon'],
+        ['stageServer'],
         callback
     );
 });
@@ -326,8 +360,8 @@ gulp.task('build-prod', function(callback) {
 gulp.task('build', function(callback) {
     runSequence(
         ['clean-full', 'lint'],
-        ['bundle-dev', 'styles-dev', 'images', 'vendorJS', 'vendorCSS', 'copyIndex', 'copyFavicon'],
-        ['dev', 'watch'],
+        ['bundle-dev', 'styles-dev', 'images', 'icons', 'vendorJS', 'vendorCSS', 'copyIndex', 'copyFavicon'],
+        ['devServer', 'watch'],
         callback
     );
 });

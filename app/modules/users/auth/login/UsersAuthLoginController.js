@@ -1,6 +1,6 @@
 'use strict';
 
-function UsersAuthLoginCtrl($rootScope, $scope, AUTH_EVENTS) {
+function UsersAuthLoginCtrl($rootScope, $scope, $state, $cookieStore, AUTH_EVENTS, Auth) {
 
 	$scope.credentials = {
 		email: '',
@@ -9,13 +9,13 @@ function UsersAuthLoginCtrl($rootScope, $scope, AUTH_EVENTS) {
 	
 	$scope.login = function() {
 		if ($scope.loginForm.$valid) {
-			console.log('Sending request to server.');
+			Auth.login($scope.credentials).then(
+				$state.go('profile', {id:$scope.currentUser.id})
+			);
 		}
 	};
 
-	console.log('UsersAuthLoginCtrl');
-
 }
 
-UsersAuthLoginCtrl.$inject = ['$rootScope', '$scope', 'AUTH_EVENTS'];
+UsersAuthLoginCtrl.$inject = ['$rootScope', '$scope', '$state', '$cookieStore', 'AUTH_EVENTS', 'Auth'];
 module.exports = UsersAuthLoginCtrl;

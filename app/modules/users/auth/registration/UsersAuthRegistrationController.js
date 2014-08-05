@@ -1,6 +1,6 @@
 'use strict';
 
-function UsersAuthRegistrationCtrl($scope, formValidation) {
+function UsersAuthRegistrationCtrl($scope) {
 
 	$scope.signupForm = function() {
 		if ($scope.signupForm.$valid) {
@@ -11,5 +11,5 @@ function UsersAuthRegistrationCtrl($scope, formValidation) {
 	console.log('UsersAuthRegistrationCtrl');
 }
 
-UsersAuthRegistrationCtrl.$inject = ['$scope', 'formValidation'];
+UsersAuthRegistrationCtrl.$inject = ['$scope'];
 module.exports = UsersAuthRegistrationCtrl;

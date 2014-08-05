@@ -14,14 +14,27 @@
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="mobile-menu-nav">
-
+          <!-- Main Navigation -->
           <ul class="nav navbar-nav">
+            <li></li>
             <li></li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
-            <li ui-sref-active="active"><a ui-sref="auth.login">Log In</a></li>
-            <li ui-sref-active="active"><a ui-sref="auth.signup">Sign Up</a></li>
+            <li ui-sref-active="active" ng-if="!isLoggedIn()"><a ui-sref="auth.login">Log In</a></li>
+            <li ui-sref-active="active" ng-if="!isLoggedIn()"><a ui-sref="auth.signup">Sign Up</a></li>
+            <li class="dropdown" ng-if="isLoggedIn()">
+              <div dropdown is-open="status.isopen">
+                <a class="dropdown-toggle">
+                  Hi, {{currentUser.first_name}} <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                  <li ui-sref-active="active"><a ui-sref="profile({id:currentUser.id})">My Profile</a></li>
+                  <li class="divider"></li>
+                  <li><a ng-click="logout()">Log Out</a></li>
+                </ul>
+              </div>
+            </li>
           </ul>
 
         </div><!-- /.navbar-collapse -->

@@ -1,19 +1,18 @@
 'use strict';
 
-var ApiConfig = function(ENV) {
+var ApiConfig = function() {
 	
 /* =======================================================================
 	Rails API Configuration
 ======================================================================= */
 	var apiVersion = 'v1';
-	// URLs are defined in the ENV constant
 	this.API = {
-		dev: ENV.DEV.url + apiVersion + '/',
-		prod: ENV.PROD.url + apiVersion + '/'
+		dev: 'api/' + apiVersion + '/',
+		prod: 'api/' + apiVersion + '/'
 	};
 
 	return this;
 };
 
-ApiConfig.$inject = ['ENV'];
+ApiConfig.$inject = [];
 module.exports = ApiConfig;

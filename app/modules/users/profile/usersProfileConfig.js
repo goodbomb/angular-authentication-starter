@@ -5,11 +5,16 @@ function userProfileRoutes($stateProvider) {
     var profile = {
             name: 'profile',
             url: '/user/:id',
-            template: '<div ui-view></div>',
+            template: '<div users-profile></div>',
             controller: 'UsersProfileCtrl',
+            data: {
+                moduleClasses: 'users profile',
+                pageClasses: ':id',
+                pageTitle: 'Profile Page',
+                pageDescription: 'User Profile Page.'
+            },
             resolve: {
                 user: function(Restangular, $stateParams){
-                    console.log($stateParams.id);
                     return Restangular.one('users', $stateParams.id).get();
                 }
             }

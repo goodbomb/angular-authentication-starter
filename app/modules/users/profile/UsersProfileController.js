@@ -1,8 +1,8 @@
 'use strict';
 
-function UsersProfileCtrl($rootScope, $scope, user) {
-	$scope.user = user;
+function UsersProfileCtrl() {
+	
 }
 
-UsersProfileCtrl.$inject = ['$rootScope', '$scope', 'user'];
+UsersProfileCtrl.$inject = [];
 module.exports = UsersProfileCtrl;
