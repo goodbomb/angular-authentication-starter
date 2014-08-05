@@ -1,6 +1,6 @@
 'use strict';
 // Controller naming conventions should start with an uppercase letter
-function MainCtrl($scope, $state, Auth, USER_ROLES, $cookieStore, Restangular) {
+function MainCtrl($rootScope, $scope, $state, $cookieStore, Restangular, Auth, USER_ROLES) {
 
 /* =======================================================================
 	Session Control
@@ -19,9 +19,15 @@ function MainCtrl($scope, $state, Auth, USER_ROLES, $cookieStore, Restangular) {
 	Restangular.one('users', $cookieStore.get('uid')).get().then(function(currentUser){
 		$scope.currentUser = currentUser;
 	});
+
+
+/* =======================================================================
+	System Notifications
+======================================================================= */
+	$rootScope.alertVisible = false;
 	
 }
 
 // $inject is necessary for minification. See http://bit.ly/1lNICde for explanation.
-MainCtrl.$inject = ['$scope', '$state', 'Auth', 'USER_ROLES', '$cookieStore', 'Restangular'];
+MainCtrl.$inject = ['$rootScope', '$scope', '$state', '$cookieStore', 'Restangular', 'Auth', 'USER_ROLES'];
 module.exports = MainCtrl;

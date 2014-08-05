@@ -1,24 +1,12 @@
 /*jshint camelcase: false */
 'use strict';
 
-var Auth = function($rootScope, $http, $q, $cookieStore, Restangular, AUTH_EVENTS) {
+var Auth = function($http, $cookieStore, AUTH_EVENTS, alertService) {
 
 	var authService = {
 
 		login: function(credentials) {
-			var success = function(response) {
-				$rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-				$cookieStore.put('uid', response.data.uid);
-				$cookieStore.put('auth_token', response.data.auth_token);
-			};
-
-			var error = function() {
-				$rootScope.$broadcast(AUTH_EVENTS.loginFailed);
-				// Change 'wrongCredentials' to a global alert display function
-				$rootScope.wrongCredentials = true;
-			};
-
-			return $http.post('api/user/login', credentials).then(success, error);
+			return $http.post('api/user/login', credentials);
 		},
 
 		isLoggedIn: function() {
@@ -29,6 +17,7 @@ var Auth = function($rootScope, $http, $q, $cookieStore, Restangular, AUTH_EVENT
 			return $http.delete('user/logout').then(function() {
 				$cookieStore.remove('auth_token');
 				$cookieStore.remove('uid');
+				alertService.showAlert(AUTH_EVENTS.logoutSuccess, 'alert-success');
 			});
 		},
 
@@ -44,5 +33,5 @@ var Auth = function($rootScope, $http, $q, $cookieStore, Restangular, AUTH_EVENT
 
 };
 
-Auth.$inject = ['$rootScope', '$http', '$q', '$cookieStore', 'Restangular', 'AUTH_EVENTS'];
+Auth.$inject = ['$http', '$cookieStore', 'AUTH_EVENTS', 'alertService'];
 module.exports = Auth;

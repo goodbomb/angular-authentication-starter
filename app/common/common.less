@@ -3,6 +3,7 @@
 ======================================================================= */
 @import (reference) "./styles/custom_mixins.less";
 @import (reference) "./styles/custom_variables.less";
+@import (reference) "./styles/animate.less";
 @import (reference) "../../libs/bootstrap/less/bootstrap.less";
 
 /* =======================================================================
@@ -55,10 +56,21 @@ a, a:hover {
 /* ==========================================================================
     Navigation
 ========================================================================== */
-nav.navbar {
-    border-radius: 0;
-    border:none;
-    border-bottom: solid 1px #eee;
+nav {
+    .navbar {
+        border-radius: 0;
+        border:none;
+        border-bottom: solid 1px #eee;
+    }
+    li.dropdown {
+        padding: 15px 0;
+        .dropdown-toggle {
+            padding: 18px 0px 18px 10px;
+        }
+        .caret {
+            margin-right: 10px;
+        }
+    }
 }
 
 
@@ -86,5 +98,9 @@ nav.navbar {
 /* ==========================================================================
     Notifications
 ========================================================================== */
-
+.system-notification {
+    .container();
+    .animated();
+    .fadeIn();
+}
 
