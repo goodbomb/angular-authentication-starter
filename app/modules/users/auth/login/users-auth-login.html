@@ -2,7 +2,7 @@
 
 	<div class="login-form">
 		<h1>Log In</h1>
-	    <form class="form" name="loginForm" ng-submit="login()" novalidate>
+	    <form class="form" name="loginForm" ng-submit="login(loginForm.$valid)" novalidate>
 
 	    	<div class="form-group" ng-class="{'invalid' : loginForm.email.$invalid && loginForm.email.$dirty, 'valid' : loginForm.email.$valid && loginForm.email.$dirty}">
 	    		<label for="email" class="inline">Email</label>

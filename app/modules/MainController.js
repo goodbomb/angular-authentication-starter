@@ -20,7 +20,7 @@ function MainCtrl($rootScope, $scope, $timeout, $state, $cookieStore, Restangula
 		Restangular.one('users', $cookieStore.get('uid')).get().then(function(currentUser){
 			$scope.currentUser = currentUser;
 		});
-	}
+	};
 	
 	setCurrentUser();
 	$rootScope.$on('logged-in', setCurrentUser);

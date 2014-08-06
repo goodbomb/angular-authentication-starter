@@ -1,7 +1,6 @@
-/*jshint camelcase: false */
 'use strict';
 
-function UsersAuthLoginCtrl($rootScope, $scope, $state, $cookieStore, $timeout, Auth, AUTH_EVENTS, alertService) {
+function UsersAuthLoginCtrl($rootScope, $scope, $state, $cookieStore, Auth, AUTH_EVENTS, alertService) {
 
 	var success = function(user) {
 		$rootScope.$broadcast('logged-in');
@@ -18,8 +17,8 @@ function UsersAuthLoginCtrl($rootScope, $scope, $state, $cookieStore, $timeout, 
 		password: ''
 	};
 
-	$scope.login = function() {
-		if ($scope.loginForm.$valid) {
+	$scope.login = function(isValid) {
+		if (isValid) {
 			Auth.login($scope.credentials).then(success, error);
 		}
 	};
@@ -28,5 +27,5 @@ function UsersAuthLoginCtrl($rootScope, $scope, $state, $cookieStore, $timeout, 
 
 }
 
-UsersAuthLoginCtrl.$inject = ['$rootScope', '$scope', '$state', '$cookieStore', '$timeout', 'Auth', 'AUTH_EVENTS', 'alertService'];
+UsersAuthLoginCtrl.$inject = ['$rootScope', '$scope', '$state', '$cookieStore', 'Auth', 'AUTH_EVENTS', 'alertService'];
 module.exports = UsersAuthLoginCtrl;
