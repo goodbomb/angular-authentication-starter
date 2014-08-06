@@ -5,10 +5,24 @@ var ApiConfig = function() {
 /* =======================================================================
 	Rails API Configuration
 ======================================================================= */
-	var apiVersion = 'v1';
+	var apiProxy = 'api',
+		apiVersion = 'v1';
+
 	this.API = {
-		dev: 'api/' + apiVersion + '/',
-		prod: 'api/' + apiVersion + '/'
+		DEV: {
+			paths: {
+				baseUrl: apiProxy + '/' + apiVersion + '/',
+				login: apiProxy + '/user/login',
+				signup: apiProxy + '/user/signup'
+			}
+		},
+		PROD: {
+			paths: {
+				baseUrl: apiProxy + '/' + apiVersion + '/',
+				login: apiProxy + '/user/login',
+				signup: apiProxy + '/user/signup'
+			}
+		}
 	};
 
 	return this;

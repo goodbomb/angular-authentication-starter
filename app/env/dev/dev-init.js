@@ -5,7 +5,7 @@ function devInit($rootScope, Restangular, apiConfig, ENV) {
 	$rootScope.$broadcast('ENV_DEV');
 	$rootScope.serverUrl = ENV.DEV.serverUrl;
 	// Restangular BaseURL Config
-	Restangular.setBaseUrl(apiConfig.API.dev);
+	Restangular.setBaseUrl(apiConfig.API.DEV.paths.baseUrl);
 	
 }
 

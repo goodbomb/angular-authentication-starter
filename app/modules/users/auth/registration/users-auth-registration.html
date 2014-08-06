@@ -1,7 +1,21 @@
 <div class="users-auth-registration small-panel">
     <div class="signup-form">
         <h1>Register</h1>
-        <form class="form" name="signupForm" ng-submit="signup()" novalidate>
+        <form class="form" name="signupForm" ng-submit="signup(signupForm.$valid)" novalidate>
+
+            <div class="form-group first_name" ng-class="{'invalid' : signupForm.first_name.$invalid && signupForm.first_name.$dirty, 'valid' : signupForm.first_name.$valid && signupForm.first_name.$dirty}">
+                <label for="first_name" class="inline">First Name</label>
+                <input type="first_name" name="first_name" id="first_name" class="form-control" placeholder="First Name" ng-model="user.first_name" ng-pattern="nameRegex" required auto-focus show-form-errors />
+                <p class="form-helper" ng-if="signupForm.first_name.$error.pattern && !signupForm.first_name.$focused">This field only accepts letters</p>
+                <p class="form-helper" ng-if="signupForm.first_name.$dirty && signupForm.first_name.$error.required && !signupForm.first_name.$focused">First Name is required!</p>
+            </div>
+
+            <div class="form-group last_name" ng-class="{'invalid' : signupForm.last_name.$invalid && signupForm.last_name.$dirty, 'valid' : signupForm.last_name.$valid && signupForm.last_name.$dirty}">
+                <label for="last_name" class="inline">Last Name</label>
+                <input type="last_name" name="last_name" id="last_name" class="form-control" placeholder="Last Name" ng-model="user.last_name" ng-pattern="nameRegex" required auto-focus show-form-errors />
+                <p class="form-helper" ng-if="signupForm.last_name.$error.pattern && !signupForm.last_name.$focused">This field only accepts letters</p>
+                <p class="form-helper" ng-if="signupForm.last_name.$dirty && signupForm.last_name.$error.required && !signupForm.last_name.$focused">Last Name is required!</p>
+            </div>
 
             <div class="form-group" ng-class="{'invalid' : signupForm.email.$invalid && signupForm.email.$dirty, 'valid' : signupForm.email.$valid && signupForm.email.$dirty}">
                 <label for="email" class="inline">Email</label>

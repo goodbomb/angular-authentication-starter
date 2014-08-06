@@ -106,7 +106,12 @@ nav {
 .system-notification {
     .container();
     .animated();
-    .fadeIn();
     text-align: center;
+    &.ng-enter {
+        .fadeIn();
+    }
+    &.ng-leave {
+        .fadeOut();
+    }
 }
 

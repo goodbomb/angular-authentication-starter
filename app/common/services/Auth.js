@@ -1,16 +1,20 @@
 /*jshint camelcase: false */
 'use strict';
 
-var Auth = function($http, $cookieStore, AUTH_EVENTS, alertService) {
+var Auth = function($http, $cookieStore, AUTH_EVENTS, alertService, apiConfig) {
 
 	var authService = {
 
-		signup: function(newUser) {
-			return $http.post('api/user/sign_up', newUser);
+		signup: function(data) {
+			return $http.post(apiConfig.API.DEV.paths.signup, {user:data}).then(function(user){
+				$cookieStore.put('uid', user.data.uid);
+				$cookieStore.put('auth_token', user.data.auth_token);
+				return user;
+			});
 		},
 
 		login: function(credentials) {
-			return $http.post('api/user/login', credentials).then(function(user){
+			return $http.post(apiConfig.API.DEV.paths.login, credentials).then(function(user){
 				$cookieStore.put('uid', user.data.uid);
 				$cookieStore.put('auth_token', user.data.auth_token);
 				return user;
@@ -41,5 +45,5 @@ var Auth = function($http, $cookieStore, AUTH_EVENTS, alertService) {
 
 };
 
-Auth.$inject = ['$http', '$cookieStore', 'AUTH_EVENTS', 'alertService'];
+Auth.$inject = ['$http', '$cookieStore', 'AUTH_EVENTS', 'alertService', 'apiConfig'];
 module.exports = Auth;
