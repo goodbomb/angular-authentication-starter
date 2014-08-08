@@ -5,18 +5,12 @@ function userRoutes($stateProvider) {
     // For resolve to function correctly, a controller must be used that is neither assigned to a directive, 
     // nor assigned in an HTML file. For this reason, the resolve needs to be assigned to an abstract state.
 
-    var users = {
-            name: 'users',
+    var user = {
+            name: 'user',
             abstract: true,
             url: '/user/:id',
             template: '<div ui-view></div>',
             controller: 'UsersCtrl',
-            data: {
-                moduleClasses: 'users',
-                pageClasses: ':id',
-                pageTitle: '',
-                pageDescription: ''
-            },
             resolve: {
                 user: function(Restangular, $stateParams){
                     console.log($stateParams.id);
@@ -25,19 +19,19 @@ function userRoutes($stateProvider) {
             }
         },
         profile = {
-            name: 'users.profile',
+            name: 'user.profile',
             url: '',
             template: '<div users-profile></div>',
             controller: 'UsersProfileCtrl',
             data: {
-                moduleClasses: 'profile',
-                pageClasses: ':id',
+                moduleClasses: 'users',
+                pageClasses: 'profile',
                 pageTitle: 'Profile Page',
                 pageDescription: 'User Profile Page.'
             }
         };
 
-    $stateProvider.state(users);
+    $stateProvider.state(user);
     $stateProvider.state(profile);
 
 }
