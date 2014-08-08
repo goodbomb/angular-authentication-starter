@@ -1,10 +1,10 @@
 'use strict';
 
-function UsersCtrl() {
+function UsersCtrl($rootScope, $scope, user) {
 
-	console.log('UsersCtrl');
+	$scope.user = user;
 	
 }
 
-UsersCtrl.$inject = [];
+UsersCtrl.$inject = ['$rootScope', '$scope', 'user'];
 module.exports = UsersCtrl;
